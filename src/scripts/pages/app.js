@@ -3,8 +3,8 @@ import {
   generateAuthenticatedNavigationListTemplate,
   generateMainNavigationListTemplate,
   generateSubscribeButtonTemplate,
-  generateUnsubscribeButtonTemplate,
   generateUnauthenticatedNavigationListTemplate,
+  generateUnsubscribeButtonTemplate,
 } from '../templates';
 import { setupSkipToContent, transitionHelper, isServiceWorkerAvailable} from '../utils';
 import { getAccessToken, getLogout } from '../utils/auth';

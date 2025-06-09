@@ -80,7 +80,7 @@ export async function subscribe() {
       alert(failureSubscribeMessage);
 
       // Undo subscribe to push notification
-      await pushSubscription.unsubscribe();
+      // await pushSubscription.unsubscribe();
 
       return;
     }
@@ -91,7 +91,7 @@ export async function subscribe() {
     alert(failureSubscribeMessage);
 
     // Undo subscribe to push notification
-    await pushSubscription.unsubscribe();
+    // await pushSubscription.unsubscribe();
   }
 }
 
