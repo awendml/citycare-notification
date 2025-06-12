@@ -61,7 +61,7 @@ export async function subscribe() {
     return;
   }
 
-  console.log('Mulai berlangganan push notification...');
+  // console.log('Mulai berlangganan push notification...');
 
   const failureSubscribeMessage = 'Langganan push notification gagal diaktifkan.';
   const successSubscribeMessage = 'Langganan push notification berhasil diaktifkan.';
