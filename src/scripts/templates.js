@@ -265,7 +265,7 @@ export function generateUnsubscribeButtonTemplate() {
 export function generateSaveReportButtonTemplate() {
   return `
     <button id="report-detail-save" class="btn btn-transparent">
-      Simpan laporan <i class="far fa-bookmark"></i>
+      Simpan Story <i class="far fa-bookmark"></i>
     </button>
   `;
 }
@@ -273,7 +273,7 @@ export function generateSaveReportButtonTemplate() {
 export function generateRemoveReportButtonTemplate() {
   return `
     <button id="report-detail-remove" class="btn btn-transparent">
-      Buang laporan <i class="fas fa-bookmark"></i>
+      Buang Story <i class="fas fa-bookmark"></i>
     </button>
   `;
 }

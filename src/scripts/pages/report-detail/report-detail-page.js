@@ -28,7 +28,26 @@ export default class ReportDetailPage {
           <div id="report-detail-loading-container"></div>
         </div>
       </section>
-
+      
+      <section class="container">
+        <hr>
+        <div class="report-detail__comments__container">
+          <div class="report-detail__comments-form__container">
+            <h2 class="report-detail__comments-form__title">Beri Tanggapan</h2>
+            <form id="comments-list-form" class="report-detail__comments-form__form">
+              <textarea name="body" placeholder="Beri tanggapan terkait laporan."></textarea>
+              <div id="submit-button-container">
+                <button class="btn" type="submit">Tanggapi</button>
+              </div>
+            </form>
+          </div>
+          <hr>
+          <div class="report-detail__comments-list__container">
+            <div id="report-detail-comments-list"></div>
+            <div id="comments-list-loading-container"></div>
+          </div>
+        </div>
+      </section>
     `;
   }
 
@@ -38,10 +57,10 @@ export default class ReportDetailPage {
       apiModel: CityCareAPI,
     });
 
-    // this.#setupForm();
+    this.#setupForm();
 
     this.#presenter.showReportDetail();
-    // this.#presenter.getCommentsList();
+    this.#presenter.getCommentsList();
   }
 
   async populateReportDetailAndInitialMap(message, report) {
@@ -69,7 +88,7 @@ export default class ReportDetailPage {
       }
 
     // Actions buttons
-    // this.#presenter.showSaveButton();
+    this.#presenter.showSaveButton();
     this.addNotifyMeEventListener();
   }
 
@@ -77,6 +96,38 @@ export default class ReportDetailPage {
     document.getElementById('report-detail').innerHTML = generateReportDetailErrorTemplate(message);
   }
 
+  populateReportDetailComments(message, comments) {
+    if (comments.length <= 0) {
+      this.populateCommentsListEmpty();
+      return;
+    }
+
+    const html = comments.reduce(
+      (accumulator, comment) =>
+        accumulator.concat(
+          generateReportCommentItemTemplate({
+            photoUrlCommenter: comment.commenter.photoUrl,
+            nameCommenter: comment.commenter.name,
+            body: comment.body,
+          }),
+        ),
+      '',
+    );
+
+    document.getElementById('report-detail-comments-list').innerHTML = `
+      <div class="report-detail__comments-list">${html}</div>
+    `;
+  }
+
+  populateCommentsListEmpty() {
+    document.getElementById('report-detail-comments-list').innerHTML =
+      generateCommentsListEmptyTemplate();
+  }
+
+  populateCommentsListError(message) {
+    document.getElementById('report-detail-comments-list').innerHTML =
+      generateCommentsListErrorTemplate(message);
+  }
 
 
   async initialMap() {
@@ -85,41 +136,41 @@ export default class ReportDetailPage {
     });
   }
 
-  // #setupForm() {
-  //   this.#form = document.getElementById('comments-list-form');
-  //   this.#form.addEventListener('submit', async (event) => {
-  //     event.preventDefault();
+  #setupForm() {
+    this.#form = document.getElementById('comments-list-form');
+    this.#form.addEventListener('submit', async (event) => {
+      event.preventDefault();
 
-  //     const data = {
-  //       body: this.#form.elements.namedItem('body').value,
-  //     };
-  //     await this.#presenter.postNewComment(data);
-  //   });
-  // }
+      const data = {
+        body: this.#form.elements.namedItem('body').value,
+      };
+      await this.#presenter.postNewComment(data);
+    });
+  }
 
-  // postNewCommentSuccessfully(message) {
-  //   console.log(message);
+  postNewCommentSuccessfully(message) {
+    console.log(message);
 
-  //   this.#presenter.getCommentsList();
-  //   this.clearForm();
-  // }
+    this.#presenter.getCommentsList();
+    this.clearForm();
+  }
 
-  // postNewCommentFailed(message) {
-  //   alert(message);
-  // }
+  postNewCommentFailed(message) {
+    alert(message);
+  }
 
-  // clearForm() {
-  //   this.#form.reset();
-  // }
+  clearForm() {
+    this.#form.reset();
+  }
 
-  // renderSaveButton() {
-  //   document.getElementById('save-actions-container').innerHTML =
-  //     generateSaveReportButtonTemplate();
+  renderSaveButton() {
+    document.getElementById('save-actions-container').innerHTML =
+      generateSaveReportButtonTemplate();
 
-  //   document.getElementById('report-detail-save').addEventListener('click', async () => {
-  //     alert('Fitur simpan laporan akan segera hadir!');
-  //   });
-  // }
+    document.getElementById('report-detail-save').addEventListener('click', async () => {
+      alert('Fitur simpan laporan akan segera hadir!');
+    });
+  }
 
   renderRemoveButton() {
     document.getElementById('save-actions-container').innerHTML =
