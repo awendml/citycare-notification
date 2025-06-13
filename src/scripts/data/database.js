@@ -18,7 +18,7 @@ const Database = {
       throw new Error('`id` is required to save.');
     }
 
-    return (await dbPromise).add(OBJECT_STORE_NAME, story);
+    return (await dbPromise).put(OBJECT_STORE_NAME, story);
   },
 
   async getStoryById(id) {
@@ -36,6 +36,13 @@ const Database = {
   async removeStory(id) {
     return (await dbPromise).delete(OBJECT_STORE_NAME, id);
   },
+  // async putReport(report) {
+  //   if (!Object.hasOwn(report, 'id')) {
+  //     throw new Error('`id` is required to save.');
+  //   }
+  //   return (await dbPromise).put(OBJECT_STORE_NAME, report);
+  // },
 };
+
 
 export default Database;

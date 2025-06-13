@@ -13,17 +13,17 @@ const ENDPOINTS = {
   STORE_NEW_STORY: `${BASE_URL}/stories`,
 
   // Report Comment
-  REPORT_COMMENTS_LIST: (reportId) => `${BASE_URL}/reports/${reportId}/comments`,
-  STORE_NEW_STORY_COMMENT: (reportId) => `${BASE_URL}/reports/${reportId}/comments`,
+  REPORT_COMMENTS_LIST: (reportId) => `${BASE_URL}/stories/${reportId}/comments`,
+  STORE_NEW_STORY_COMMENT: (reportId) => `${BASE_URL}/stories/${reportId}/comments`,
 
   // Report Comment
   SUBSCRIBE: `${BASE_URL}/notifications/subscribe`,
   UNSUBSCRIBE: `${BASE_URL}/notifications/subscribe`,
-  SEND_REPORT_TO_ME: (reportId) => `${BASE_URL}/reports/${reportId}/notify-me`,
-  SEND_REPORT_TO_USER: (reportId) => `${BASE_URL}/reports/${reportId}/notify`,
-  SEND_REPORT_TO_ALL_USER: (reportId) => `${BASE_URL}/reports/${reportId}/notify-all`,
+  SEND_REPORT_TO_ME: (reportId) => `${BASE_URL}/stories/${reportId}/notify-me`,
+  SEND_REPORT_TO_USER: (reportId) => `${BASE_URL}/stories/${reportId}/notify`,
+  SEND_REPORT_TO_ALL_USER: (reportId) => `${BASE_URL}/stories/${reportId}/notify-all`,
   SEND_COMMENT_TO_REPORT_OWNER: (reportId, commentId) =>
-    `${BASE_URL}/reports/${reportId}/comments/${commentId}/notify`,
+    `${BASE_URL}/stories/${reportId}/comments/${commentId}/notify`,
 };
 
 export async function getRegistered({ name, email, password }) {
@@ -93,6 +93,7 @@ export async function getReportById(id) {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
   const json = await fetchResponse.json();
+  
   return {
     ...json,
     ok: fetchResponse.ok,

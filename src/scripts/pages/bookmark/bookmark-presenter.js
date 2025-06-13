@@ -21,11 +21,12 @@ export default class BookmarkPresenter {
   }
 
   async initialGalleryAndMap() {
+    
     this.#view.showStoriesListLoading();
-
+    
     try {
       await this.showStoriesListMap();
-
+      
       const listOfStories = await this.#model.getAllStories();
       const stories = await Promise.all(listOfStories.map(storyMapper));
 

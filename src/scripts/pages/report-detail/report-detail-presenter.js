@@ -1,14 +1,17 @@
-import { reportMapper } from '../../data/api-mapper';
+import { storyMapper } from '../../data/api-mapper';
 
 export default class ReportDetailPresenter {
   #reportId;
   #view;
   #apiModel;
+  #dbModel;
 
-  constructor(reportId, { view, apiModel }) {
+  constructor(reportId, { view, apiModel, dbModel }) {
     this.#reportId = reportId;
     this.#view = view;
     this.#apiModel = apiModel;
+    this.#dbModel = dbModel;
+
   }
 
   async showReportDetailMap() {
@@ -24,15 +27,15 @@ export default class ReportDetailPresenter {
 
   async showReportDetail() {
     this.#view.showReportDetailLoading();
+    
     try {
       const response = await this.#apiModel.getReportById(this.#reportId);
-
       if (!response.ok) {
         console.error('showReportDetailAndMap: response:', response);
         this.#view.populateReportDetailError(response.message);
         return;
       }
-      const report = await reportMapper(response.story);
+      const report = await storyMapper(response.story);
       
       this.#view.populateReportDetailAndInitialMap(response.message, report);
     } catch (error) {
@@ -76,8 +79,30 @@ export default class ReportDetailPresenter {
     }
   }
 
-  showSaveButton() {
-    if (this.#isReportSaved()) {
+  async saveReport() {
+    try {
+      const report = await this.#apiModel.getReportById(this.#reportId);
+      
+      await this.#dbModel.putStory(report.story);
+      this.#view.saveToBookmarkSuccessfully('Success to save to bookmark');
+    } catch (error) {
+      console.error('saveReport: error:', error);
+      this.#view.saveToBookmarkFailed(error.message);
+    }
+  }
+
+  async removeReport() {
+    try {
+      await this.#dbModel.removeStory(this.#reportId);
+
+      this.#view.removeFromBookmarkSuccessfully('Success to remove from bookmark');
+    } catch (error) {
+      console.error('removeReport: error:', error);
+      this.#view.removeFromBookmarkFailed(error.message);
+    }
+  }
+  async showSaveButton() {
+    if (await this.#isReportSaved()) {
       this.#view.renderRemoveButton();
       return;
     }
@@ -85,7 +110,7 @@ export default class ReportDetailPresenter {
     this.#view.renderSaveButton();
   }
 
-  #isReportSaved() {
-    return false;
+  async #isReportSaved() {
+    return !!(await this.#dbModel.getStoryById(this.#reportId));
   }
 }
