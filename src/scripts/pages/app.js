@@ -102,9 +102,8 @@ export default class App {
       subscribe().finally(() => {
         this.#setupPushNotification();
       });
-    })
-
-}
+    });
+  }
   async renderPage() {
     const url = getActiveRoute();
     const route = routes[url];
@@ -130,3 +129,4 @@ export default class App {
     });
   }
 }
+
