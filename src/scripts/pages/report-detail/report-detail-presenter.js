@@ -50,7 +50,7 @@ export default class ReportDetailPresenter {
     this.#view.showCommentsLoading();
     try {
       const response = await this.#apiModel.getAllCommentsByReportId(this.#reportId);
-      this.#view.populateReportDetailComments(response.message, response.data);
+      this.#view.populateReportDetailComments(response.message, response.listStory);
     } catch (error) {
       console.error('getCommentsList: error:', error);
       this.#view.populateCommentsListError(error.message);
@@ -70,7 +70,7 @@ export default class ReportDetailPresenter {
         return;
       }
 
-      this.#view.postNewCommentSuccessfully(response.message, response.data);
+      this.#view.postNewCommentSuccessfully(response.message, response.listStory);
     } catch (error) {
       console.error('postNewComment: error:', error);
       this.#view.postNewCommentFailed(error.message);
