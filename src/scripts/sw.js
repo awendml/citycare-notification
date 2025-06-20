@@ -7,6 +7,21 @@ import { BASE_URL } from './config';
 // Do precaching
 const manifest = self.__WB_MANIFEST;
 precacheAndRoute(manifest);
+
+registerRoute(
+  ({ request, url }) => {
+    const baseUrl = new URL(BASE_URL);
+    return baseUrl.origin === url.origin && request.destination !== 'image';
+  },
+  new NetworkFirst({
+    cacheName: 'citycare-api',
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200], // <- penting!
+      }),
+    ],
+  }),
+);
  
 // Runtime caching
 registerRoute(
